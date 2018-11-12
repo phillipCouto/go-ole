@@ -3,6 +3,7 @@
 package ole
 
 import (
+	"log"
 	"unsafe"
 )
 
@@ -29,6 +30,81 @@ func (sac *SafeArrayConversion) ToByteArray() (bytes []byte) {
 		safeArrayGetElement(sac.Array, i, unsafe.Pointer(&bytes[int32(i)]))
 	}
 
+	return
+}
+
+func (sac *SafeArrayConversion) ToValueArray2() (values [][]interface{}) {
+	totalElements1, _ := sac.TotalElements(2)
+	totalElements2, _ := sac.TotalElements(1)
+	te1, te2 := int(totalElements1), int(totalElements2)
+	vt, _ := safeArrayGetVartype(sac.Array)
+
+	log.Println(totalElements1, totalElements2)
+	values = make([][]interface{}, te1)
+	for j := 0; j < te1; j++ {
+		row := make([]interface{}, te2)
+		for i := 0; i < te2; i++ {
+			idx := [2]int64{int64(i), int64(j)}
+			idxPt := unsafe.Pointer(&idx)
+			switch VT(vt) {
+			case VT_BOOL:
+				var v bool
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_I1:
+				var v int8
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_I2:
+				var v int16
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_I4:
+				var v int32
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_I8:
+				var v int64
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_UI1:
+				var v uint8
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_UI2:
+				var v uint16
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_UI4:
+				var v uint32
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_UI8:
+				var v uint64
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_R4:
+				var v float32
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_R8:
+				var v float64
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_BSTR:
+				var v string
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v
+			case VT_VARIANT:
+				var v VARIANT
+				sac.Array.GetElement(idxPt, unsafe.Pointer(&v))
+				row[i] = v.Value()
+			default:
+				// TODO
+			}
+		}
+		values[j] = row
+	}
 	return
 }
 

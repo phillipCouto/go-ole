@@ -226,6 +226,24 @@ func safeArrayGetElementString(safearray *SafeArray, index int32) (str string, e
 	return
 }
 
+// safeArrayGetElement retrieves element at given index.
+func safeArrayGetElement2(safearray *SafeArray, i, j int64, pv unsafe.Pointer) error {
+	index := [2]int64{i, j}
+	return convertHresultToError(
+		procSafeArrayGetElement.Call(
+			uintptr(unsafe.Pointer(safearray)),
+			uintptr(unsafe.Pointer(&index)),
+			uintptr(pv)))
+}
+
+func (safeArray *SafeArray) GetElement(index unsafe.Pointer, pv unsafe.Pointer) error {
+	return convertHresultToError(
+		procSafeArrayGetElement.Call(
+			uintptr(unsafe.Pointer(safeArray)),
+			uintptr(index),
+			uintptr(pv)))
+}
+
 // safeArrayGetIID is the InterfaceID of the elements in the SafeArray.
 //
 // AKA: SafeArrayGetIID in Windows API.
