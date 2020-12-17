@@ -128,6 +128,16 @@ func safeArrayGetElement(safearray *SafeArray, index int32, pv unsafe.Pointer) e
 	return NewError(E_NOTIMPL)
 }
 
+// safeArrayGetElement retrieves element at given index.
+func safeArrayGetElement2(safearray *SafeArray, i, j int32, pv unsafe.Pointer) error {
+	return NewError(E_NOTIMPL)
+}
+
+//GetElement at specific index pointer
+func (safeArray *SafeArray) GetElement(index unsafe.Pointer, pv unsafe.Pointer) error {
+	return NewError(E_NOTIMPL)
+}
+
 // safeArrayGetElement retrieves element at given index and converts to string.
 func safeArrayGetElementString(safearray *SafeArray, index int32) (string, error) {
 	return "", NewError(E_NOTIMPL)

@@ -227,8 +227,8 @@ func safeArrayGetElementString(safearray *SafeArray, index int32) (str string, e
 }
 
 // safeArrayGetElement retrieves element at given index.
-func safeArrayGetElement2(safearray *SafeArray, i, j int64, pv unsafe.Pointer) error {
-	index := [2]int64{i, j}
+func safeArrayGetElement2(safearray *SafeArray, i, j int32, pv unsafe.Pointer) error {
+	index := [2]int32{i, j}
 	return convertHresultToError(
 		procSafeArrayGetElement.Call(
 			uintptr(unsafe.Pointer(safearray)),

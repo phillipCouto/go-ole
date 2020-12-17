@@ -44,7 +44,7 @@ func (sac *SafeArrayConversion) ToValueArray2() (values [][]interface{}) {
 	for j := 0; j < te1; j++ {
 		row := make([]interface{}, te2)
 		for i := 0; i < te2; i++ {
-			idx := [2]int64{int64(i), int64(j)}
+			idx := [2]int32{int32(i), int32(j)}
 			idxPt := unsafe.Pointer(&idx)
 			switch VT(vt) {
 			case VT_BOOL:
